@@ -13,29 +13,33 @@ class Configure(object):
     
     config_filepath = path.abspath('config.json')
     
-    __config = OrderedDict([
-        ('access_key_id', None),
-        ('secret_access_key', None),
+    # User input config
+    __user_config = OrderedDict([
+        ('aws_access_key_id', None),
+        ('aws_secret_access_key', None),
         ('region', None),
         
         ('bucket', None),
         ('basepath', None),
         
-        ('keep_days', 7),
-        ('timezone', 'Asia1/Tokyo'),
-        
+        ('keep_days', '7'),
+        ('timezone', 'Asia/Tokyo'),
+    ])
+    
+    # System config
+    __sys_config = OrderedDict([
         ('hostname', None),
     ])
     
-    # List of keys of config that not allowed for user input
-    __reserved_config_keys = [
-        'hostname'
-    ]
-    
+    # Full config
+    __config = OrderedDict()
+
 
     @classmethod
     def set(cls, config):
-        ''' Update config in memory'''
+        ''' Update config in memory '''
+        config = dict((k, v) for k, v in config.items() \
+            if k in cls.__config and (v or v==0))
         cls.__config.update(config)
 
 
@@ -58,12 +62,11 @@ class Configure(object):
         ''' Prompt user input for config '''
         cls.read_from_file()
         config = {}
-        for key, val in cls.__config.items():
-            if key in cls.__reserved_config_keys:
-                continue
-            config[key] = io.input(' %s [%s]: ' % (key, val))
+        for key in cls.__user_config:
+            default_val = cls.__config[key]
+            config[key] = io.input(' %s [%s]: ' % (key, default_val))
             if not config[key]:
-                config[key] = val
+                config[key] = default_val
         cls.set(config)
 
 
@@ -86,6 +89,8 @@ class Configure(object):
     @classmethod
     def read_from_file(cls):
         ''' Read config from file '''
+        cls.__config.update(cls.__user_config)
+        cls.__config.update(cls.__sys_config)
         config = {}
         if (os.path.isfile(cls.config_filepath)):
             with open(cls.config_filepath, 'r') as f:
