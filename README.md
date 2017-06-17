@@ -1,4 +1,4 @@
-# s3bk
+# s3ant
 Regularly backup data to Amazon S3 bucket
 
 # Require
