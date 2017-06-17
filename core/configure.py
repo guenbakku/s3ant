@@ -2,16 +2,14 @@
 
 import os
 import json
-import core.path as path
+import core.utils as utils
 import core.hash as hash
-import core.inout as io
-import core.validator as vld
 from collections import OrderedDict
 
 class Configure(object):
     ''' Handle configure '''
     
-    config_filepath = path.abspath('config.json')
+    config_filepath = utils.abspath('config.json')
     
     # User input config
     __user_config = OrderedDict([
@@ -64,7 +62,7 @@ class Configure(object):
         config = {}
         for key in cls.__user_config:
             default_val = cls.__config[key]
-            config[key] = io.input(' %s [%s]: ' % (key, default_val))
+            config[key] = utils.input(' %s [%s]: ' % (key, default_val))
             if not config[key]:
                 config[key] = default_val
         cls.set(config)
@@ -74,7 +72,7 @@ class Configure(object):
     def sys_input(cls):
         ''' Set system config '''
         config = {
-            'hostname': vld.hostname(),
+            'hostname': utils.hostname(),
         }
         cls.set(config)
         
