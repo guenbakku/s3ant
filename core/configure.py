@@ -41,16 +41,23 @@ class Configure(object):
         config = dict((k, v) for k, v in config.items() \
             if k in cls.__config and (v or v==0))
         cls.__config.update(config)
+        
+        # Standardize config value
         if isinstance(cls.__config['backup_paths'], types.StringTypes):
             cls.__config['backup_paths'] = cls.__config['backup_paths'].split(' ')
         if isinstance(cls.__config['keep_days'], types.StringTypes):
             cls.__config['keep_days'] = int(cls.__config['keep_days'])
+        if isinstance(cls.__config['bucket_basepath'], types.StringTypes):
+            cls.__config['bucket_basepath'] = cls.__config['bucket_basepath'].strip('/')
 
 
     @classmethod
-    def get(cls, path):
+    def get(cls, path=None):
         ''' Return config from provided path '''
-        return hash.get(cls.__config, path)
+        if path is None:
+            return cls.__config
+        else:
+            return hash.get(cls.__config, path)
     
     
     @classmethod

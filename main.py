@@ -1,21 +1,25 @@
 # coding: utf-8
 
-from core.configure import Configure
+import os
 from core import utils
+from core.configure import Configure
 from core.compressor import Compressor
+from core.backup import Backup
 
-source = [utils.abspath('core'), utils.abspath('tmp')]
-target = utils.abspath('test.zip')
+# Configure.initialize()
 
 cp = Compressor() 
+zip_source = [utils.abspath('core')]
+zip_target = utils.abspath('test.zip')
 cp.configure({'exclude': [utils.abspath('core/compress.py')]})
-cp.add(source)
-print(cp.zip(target))
+cp.add(zip_source)
+cp.zip(zip_target)
 
-# print(utils.which_cmd('zip'))
+bk = Backup()
+bk.dry_run = True
+bk.credentials(Configure.get())
+bk.bucket(Configure.get())
+bk.delete_old_backups()
+bk.upload(zip_target)
 
-# Configure.set({'base_path': 'test', 'hiep': 'test'})
-# Configure.write_to_file()
-# Configure.initialize()
-# print(Configure.get('hostname'))
-# print(Configure.get('access_key_id'))
+os.remove(zip_target)

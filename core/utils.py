@@ -58,3 +58,9 @@ def which_cmd(name):
     if not cmd:
         raise EnvironmentError('Command not found [%s]' % name)
     return cmd
+
+
+def utc2epoch(dt):
+    ''' Convert UTC datetime object to Epoch timestamp '''
+    import calendar
+    return calendar.timegm(dt.timetuple())
