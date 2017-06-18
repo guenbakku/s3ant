@@ -2,6 +2,7 @@
 
 import os
 import json
+import types
 import core.utils as utils
 import core.hash as hash
 from collections import OrderedDict
@@ -18,7 +19,8 @@ class Configure(object):
         ('region', None),
         
         ('bucket', None),
-        ('basepath', None),
+        ('bucket_basepath', None),
+        ('backup_paths', ['/bach/home', '/test/test/test']),
         
         ('keep_days', '7'),
         ('timezone', 'Asia/Tokyo'),
@@ -39,6 +41,10 @@ class Configure(object):
         config = dict((k, v) for k, v in config.items() \
             if k in cls.__config and (v or v==0))
         cls.__config.update(config)
+        if isinstance(cls.__config['backup_paths'], types.StringTypes):
+            cls.__config['backup_paths'] = cls.__config['backup_paths'].split(' ')
+        if isinstance(cls.__config['keep_days'], types.StringTypes):
+            cls.__config['keep_days'] = int(cls.__config['keep_days'])
 
 
     @classmethod
@@ -61,8 +67,11 @@ class Configure(object):
         cls.read_from_file()
         config = {}
         for key in cls.__user_config:
-            default_val = cls.__config[key]
-            config[key] = utils.input(' %s [%s]: ' % (key, default_val))
+            if key == 'backup_paths':
+                default_val = ' '.join(cls.__config[key])
+            else:
+                default_val = cls.__config[key]
+            config[key] = utils.input(' %s [%s]:\n -> ' % (key, default_val))
             if not config[key]:
                 config[key] = default_val
         cls.set(config)
