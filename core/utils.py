@@ -44,3 +44,17 @@ def input(str=''):
     sys.stdout.flush()
     input = sys.stdin.readline()
     return input.rstrip()
+
+
+def which_cmd(name):
+    ''' Return fullpath to executation of provided command '''
+    import subprocess
+    cmd = subprocess.Popen(
+        "which %s 2>/dev/null" % name, 
+        shell=True, 
+        stdout=subprocess.PIPE
+    ).stdout.read()
+    cmd = cmd.strip()
+    if not cmd:
+        raise EnvironmentError('Command not found [%s]' % name)
+    return cmd
