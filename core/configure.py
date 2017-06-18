@@ -2,7 +2,6 @@
 
 import os
 import json
-import types
 import core.utils as utils
 import core.hash as hash
 from collections import OrderedDict
@@ -43,11 +42,11 @@ class Configure(object):
         cls.__config.update(config)
         
         # Standardize config value
-        if isinstance(cls.__config['backup_paths'], types.StringTypes):
+        if not isinstance(cls.__config['backup_paths'], list):
             cls.__config['backup_paths'] = cls.__config['backup_paths'].split(' ')
-        if isinstance(cls.__config['keep_days'], types.StringTypes):
+        if not isinstance(cls.__config['keep_days'], int):
             cls.__config['keep_days'] = int(cls.__config['keep_days'])
-        if isinstance(cls.__config['bucket_basepath'], types.StringTypes):
+        if not cls.__config['bucket_basepath'] is None:
             cls.__config['bucket_basepath'] = cls.__config['bucket_basepath'].strip('/')
 
 

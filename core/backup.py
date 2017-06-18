@@ -57,8 +57,7 @@ class Backup(object):
         now = int(time.time())
         for obj in bucket.objects.all():
             # Only remove objects which is inside provided basepath
-            basepath = self.__config['bucket']['bucket_basepath']
-            in_basepath = not basepath or obj.key.startswith(basepath+'/')
+            in_basepath = self._in_basepath(obj.key)
             if not in_basepath:
                 continue
             
@@ -68,7 +67,7 @@ class Backup(object):
             if not expired:
                 continue
                 
-            print('Deleting old file %s' % self._obj_uri(obj.key))
+            print('Deleting old backup %s' % self._obj_uri(obj.key))
             if self.dry_run == False:
                 obj.delete()
 
@@ -103,12 +102,26 @@ class Backup(object):
         bucket = self.__config['bucket']['bucket']
         return 's3://%s/%s' % (bucket, key)
 
+    
+    def _in_basepath(self, key):
+        ''' Check a key is inside bucket_basepath or not '''
+        basepath = self.__config['bucket']['bucket_basepath']
+        # key is regarded that is inside basepath if it's value begins with basepath 
+        # and the part after removed basepath from it is one-level-key.
+        if not basepath:
+            return len(key.split('/')) == 1
+        elif key.startswith(basepath+'/'):
+            remain = key.replace(basepath+'/', '', 1)
+            return len(remain.split('/')) == 1
+        else:
+            return False
+
 
     def _s3client(self):
         ''' Return S3 client object '''
         return self._s3resource().meta.client
-    
-    
+
+
     def _s3resource(self):
         ''' Return S3 resource object '''
         resource = boto3.resource(

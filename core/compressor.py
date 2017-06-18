@@ -9,7 +9,6 @@
 # @license    MIT
 #
 
-import types
 import subprocess
 import core.utils as utils
 
@@ -32,7 +31,7 @@ class Compressor(object):
 
     def add(self, path):
         ''' Add path to zip '''
-        if isinstance(path, types.StringTypes):
+        if isinstance(path, str):
             path = [path]
         self.__config['paths'] += path
 

@@ -35,16 +35,23 @@ def hostname(path=''):
     return socket.gethostbyaddr(socket.gethostname())[0]
 
 
-def input(str=''):
+def input(msg=''):
     ''' Read input from stdin.
     This is made for compative with Python 2.x
     '''
     import sys
-    sys.stdout.write(str)
+    sys.stdout.write(msg)
     sys.stdout.flush()
     input = sys.stdin.readline()
     return input.rstrip()
-
+    
+    
+def error(msg=''):
+    ''' Terminate script and write msg to stderr '''
+    import sys
+    sys.stderr.write(msg+'\n')
+    sys.exit(1)
+    
 
 def which_cmd(name):
     ''' Return fullpath to executation of provided command '''
@@ -57,10 +64,17 @@ def which_cmd(name):
     cmd = cmd.strip()
     if not cmd:
         raise EnvironmentError('Command not found [%s]' % name)
-    return cmd
+    return cmd.decode('utf-8')
 
 
 def utc2epoch(dt):
     ''' Convert UTC datetime object to Epoch timestamp '''
     import calendar
     return calendar.timegm(dt.timetuple())
+
+
+def random_str(length):
+    ''' Return random string with provided length '''
+    import string
+    import random
+    return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(length)])
