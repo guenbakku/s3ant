@@ -41,10 +41,11 @@ class Backup(object):
         bucket = self.__config['bucket']['bucket']
         s3 = self._s3client()
 
-        print('Uploading to %s' % self._obj_uri(key))
         # Check connection to S3 bucket
         s3.head_bucket(Bucket=bucket)
+        
         # Upload file to S3 bucket
+        print('Uploading to %s' % self._obj_uri(key))
         if self.dry_run == False:
             s3.upload_file(filepath, bucket, key)
             
