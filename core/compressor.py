@@ -47,4 +47,4 @@ class Compressor(object):
         params['cmd'] = utils.which_cmd('zip')
         cmd = '%(cmd)s %(flags)s %(options)s %(zipfilepath)s %(paths)s %(exclude)s' % params
         exist_code = subprocess.call(cmd, shell=True)
-        return exist_code
+        return int(exist_code) == 0

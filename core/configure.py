@@ -19,7 +19,7 @@ class Configure(object):
         
         ('bucket', None),
         ('bucket_basepath', None),
-        ('backup_paths', ['/bach/home', '/test/test/test']),
+        ('backup_paths', []),
         
         ('keep_days', '7'),
         ('timezone', 'Asia/Tokyo'),
@@ -109,6 +109,29 @@ class Configure(object):
             with open(cls.config_filepath, 'r') as f:
                 config = json.load(f)
         cls.set(config)
+    
+    
+    @classmethod
+    def validate(cls):
+        # Check current machine can run this backup process or not.
+        # We compare hostname in config.json with runtime hostname,
+        # if they are equal, current machine has privilege to run this script.
+        if utils.hostname() != Configure.get('hostname'):
+            utils.error(
+                'Error: Hostname not match. \n'
+                + 'Run command [configure] to redump hostname and try again.')
+                
+        # Validate required input
+        required_keys = [
+            'aws_access_key_id', 
+            'aws_secret_access_key', 
+            'region', 
+            'bucket', 
+            'backup_paths'
+        ]
+        for key in required_keys:
+            if not cls.__config[key]:
+                utils.error('Error: Config item [%s] is empty' % key)
 
 
 # Initialize

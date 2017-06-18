@@ -22,7 +22,7 @@ CREDITS = '%s (v%s)' % (NAME, VERSION)
 
 def run(dry_run=False):
     ''' Execute backup to S3 '''
-    check_origin()
+    Configure.validate()
     try:
         timezone = Configure.get('timezone')
         if timezone:
@@ -38,7 +38,7 @@ def run(dry_run=False):
         print('Create zip file:')
         cp = Compressor()
         cp.add(zip_source)
-        cp.zip(zip_target)
+        result = cp.zip(zip_target)
         
         print('\nBackup to S3:')
         bk = Backup()
@@ -49,19 +49,11 @@ def run(dry_run=False):
         bk.upload(zip_target)
     finally:
         print('\nDeleting local zip file:')
-        os.remove(zip_target)
+        if os.path.isfile(zip_target):
+            os.remove(zip_target)
         print('OK')
     
     if dry_run:
         print('=====DRY RUN=====')
 
 
-def check_origin():
-    ''' Check current machine can run this backup process or not.
-    We compare hostname in config.json with runtime hostname,
-    if they are equal, current machine has privilege to run this script.
-    '''
-    if utils.hostname() != Configure.get('hostname'):
-        utils.error(
-            'Error: Hostname not match. \n'
-            + 'Run command [configure] to redump hostname and try again.')
