@@ -11,17 +11,17 @@ Python script for backup data to Amazon S3 bucket
 ### Set up configure
 
 ~~~
-$ python /path/to/s3bk/main.py configure
+$ python /path/to/s3ant/main.py configure
 ~~~
 
 ### Execute backup
 
 ~~~
-$ python /path/to/s3bk/main.py backup
+$ python /path/to/s3ant/main.py backup
 ~~~
 
 Beside that, dry-run can be executed by adding flag `-n`:
 
 ~~~
-$ python /path/to/s3bk/main.py backup -n
+$ python /path/to/s3ant/main.py backup -n
 ~~~
