@@ -17,7 +17,7 @@ from core.configure import Configure
 
 def input():
     ''' Get input from command line. '''
-    parser = argparse.ArgumentParser(description='s3ant - Backup data to AWS S3 bucket.')
+    parser = argparse.ArgumentParser(description='%s - Backup data to AWS S3 bucket.' % s3ant.NAME)
     parser.add_argument('cmd', help='name of command', choices=['configure', 'backup'])
     parser.add_argument('-n', dest='dry_run', action='store_true', default=False, help='execute in dry-run mode')
     parser.add_argument('-v', action='version', version=s3ant.CREDITS)
