@@ -17,7 +17,7 @@ from core.configure import Configure
 
 def input():
     ''' Get input from command line. '''
-    parser = argparse.ArgumentParser(description='%s - Backup data to AWS S3 bucket.' % s3ant.NAME)
+    parser = argparse.ArgumentParser(description=s3ant.DESCRIPTION)
     parser.add_argument('command', help='name of command', choices=['configure', 'backup'])
     parser.add_argument('-n', '--dry-run', dest='dry_run', action='store_true', default=False, help='execute in dry-run mode')
     parser.add_argument('--disable-delete', dest='disable_delete', action='store_true', default=False, help='disable delete old backups')
