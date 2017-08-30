@@ -1,11 +1,9 @@
 # coding: utf-8
 
 #
-# utils.py
-#
 # Utility functions
 #
-# @copyright  2017 NVB
+# @copyright  2017 guenbakku
 # @license    MIT
 #
 
@@ -43,7 +41,7 @@ def input(msg=''):
     sys.stdout.write(msg)
     sys.stdout.flush()
     input = sys.stdin.readline()
-    return input.rstrip()
+    return input.rstrip('\n')
     
     
 def error(msg=''):
@@ -78,3 +76,20 @@ def random_str(length):
     import string
     import random
     return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(length)])
+
+
+def is_empty(check):
+    ''' Check empty of various data type '''
+    import six
+    if check is None:
+        return True
+    if isinstance(check, list) and not list:
+        return True
+    if isinstance(check, six.string_types) and is_blank(check):
+        return True
+    return False
+
+    
+def is_blank(text):
+    ''' Check text is blank '''
+    return not (text and text.strip())

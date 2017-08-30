@@ -1,7 +1,7 @@
 # s3ant
-Python script for backup data to Amazon S3 bucket
+Python script for backup data to Amazon S3 bucket like an ant
 
-## Require evironment:
+## Requirement:
 * GPL Linux
 * Python 2.6 or higher
 * Boto3 library

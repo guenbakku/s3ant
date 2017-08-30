@@ -1,11 +1,9 @@
 # coding: utf-8
 
 #
-# hash.py
-#
 # Utility functions for handling dict, list, tuple variable
 #
-# @copyright  2017 NVB
+# @copyright  2017 guenbakku
 # @license    MIT
 #
 
