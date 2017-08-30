@@ -16,7 +16,7 @@ from core.compressor import Compressor
 from core.backup import Backup
 
 NAME = 's3ant'
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 CREDITS = '%s (v%s)' % (NAME, VERSION)
 
 def backup(dry_run=False, delete=True):
