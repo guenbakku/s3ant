@@ -18,6 +18,7 @@ from core.backup import Backup
 NAME = 's3ant'
 VERSION = '0.1.1'
 CREDITS = '%s (v%s)' % (NAME, VERSION)
+DESCRIPTION = '%s - Backup data to AWS S3 bucket like an ant.' % NAME
 
 def backup(dry_run=False, delete=True):
     ''' Execute backup to S3 and retry if error '''
